@@ -3,10 +3,14 @@
 # Web-Source: https://realpython.com/python-pyqt-qthread/
 import sys
 from time import sleep
-from PyQt5.QtCore import Qt
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+#from PyQt5.QtCore import Qt
+from PySide2.QtCore import QThread
+# from PySide2.QtCore import Signal as pyqtSignal
+from PySide2.QtCore import Qt
 
-from PyQt5.QtWidgets import (
+#from PyQt5.QtCore import QObject, QThread, pyqtSignal
+
+from PySide2.QtWidgets import (
     QApplication,
     QLabel,
     QMainWindow,
@@ -21,6 +25,7 @@ class Worker(QObject):
     progress = pyqtSignal(int)
 
     def run_1(self):
+        print('run-function executed!')
         """Long-running task."""
         for i in range(5):
             sleep(1)
@@ -43,7 +48,8 @@ class Window(QMainWindow):
         self.clicksLabel = QLabel("Counting: 0 clicks", self)
         self.clicksLabel.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         self.stepLabel = QLabel("Long-Running Step: 0")
-        self.stepLabel.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        # self.stepLabel.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        self.stepLabel.setAlignment(QtCore.Qt.AlignRight)
         self.countBtn = QPushButton("Click me!", self)
         self.countBtn.clicked.connect(self.countClicks)
         self.longRunningBtn = QPushButton("Long-Running Task!", self)

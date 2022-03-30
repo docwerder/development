@@ -15,8 +15,9 @@ class MyThread(QThread):
             self.change_value.emit(cnt)
 
     def run(self) -> None:
+        print('into run function!')
         cnt = 0
-        while cnt < 100:
+        while cnt < 10:
             cnt += 1
             time.sleep(2)
             self.change_value.emit(cnt)
@@ -45,8 +46,8 @@ class Window(QDialog):
         # Progressbar...
         self.progressbar = QProgressBar()
         self.progressbar.adjustSize()
-        self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: #2196F3; width: 10px; margin: 0.5px;}")
-
+        # self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: #2196F3; width: 10px; margin: 0.5px;}")
+        # self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: green; width: 10px; margin: 0.5px;}")
         # Button...
         self.button = QPushButton("Run Progressbar")
         self.button.clicked.connect(self.startProgressBar)
@@ -70,7 +71,7 @@ class Window(QDialog):
 
     def startProgressBar(self):
         self.thread = MyThread()
-        #self.thread.change_value.connect(self.setProgressVal)
+        self.thread.change_value.connect(self.setProgressVal)
         self.thread.start()
 
     def setProgressVal(self, val):
