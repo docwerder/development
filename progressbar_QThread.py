@@ -46,7 +46,7 @@ class Window(QDialog):
         # Progressbar...
         self.progressbar = QProgressBar()
         self.progressbar.adjustSize()
-        # self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: #2196F3; width: 10px; margin: 0.5px;}")
+        self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: #2196F3; width: 10px; margin: 0.5px;}")
         # self.progressbar.setStyleSheet("QProgressBar::chunk {background-color: green; width: 10px; margin: 0.5px;}")
         # Button...
         self.button = QPushButton("Run Progressbar")
@@ -83,7 +83,8 @@ class Window(QDialog):
         print('Klick mich clicked!')
 
 
-
-App = QApplication(sys.argv)
-window = Window()
-sys.exit(App.exec())
+if __name__ == '__main__':
+    
+    App = QApplication(sys.argv)
+    window = Window()
+    sys.exit(App.exec_())

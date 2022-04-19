@@ -66,9 +66,7 @@ class WindowShowFeatureOverview(QMainWindow):
         print('size of picturew: ', self.lbl_rosen_logo.size()/2)
         scaled = self.pixmap.scaled(self.lbl_rosen_logo.size() / 4, QtCore.Qt.KeepAspectRatio)
         self.lbl_rosen_logo.setPixmap(scaled)
-
-
-        self.lbl_rosen_logo.setScaledContents(True)
+        self.lbl_rosen_logo.setScaledContents(False)
 
         # Fill the label_pic_layout
         self.label_pic_layout.addWidget(self.lbl_feature_overview)
@@ -161,7 +159,6 @@ class WindowShowFeatureOverview(QMainWindow):
         self.complete_layout.addLayout(self.btn_layout)
         self.complete_layout.addLayout(self.hor_lin_2_layout)
         self.complete_layout.addLayout(self.canvas_and_line_layout)
-
 
 
         # self.complete_layout.addLayout(self.canvas_layout)
