@@ -145,27 +145,27 @@ class WindowFeatureUpload(QMainWindow):
         # Trying to handle wth qsplitter.
         # Link: https://zetcode.com/gui/pysidetutorial/widgets2/
         # First: Define the layout
-        self.frame_splitter_layout = QHBoxLayout()
+        #self.frame_splitter_layout = QHBoxLayout()
 
-        self.frame_frame_output = QFrame()
-        self.frame_frame_output.setFrameStyle(QFrame.Panel | QFrame.Sunken)
+        #self.frame_frame_output = QFrame()
+        #self.frame_frame_output.setFrameStyle(QFrame.Panel | QFrame.Sunken)
 
-        self.frame_calculation_output = QFrame()
-        self.frame_calculation_output.setFrameStyle(QFrame.Panel | QFrame.Sunken)
+        #self.frame_calculation_output = QFrame()
+        #self.frame_calculation_output.setFrameStyle(QFrame.Panel | QFrame.Sunken)
 
-        self.frame_output_terminal = QFrame()
-        self.frame_output_terminal.setFrameStyle(QFrame.Panel | QFrame.Sunken)
+        #self.frame_output_terminal = QFrame()
+        #self.frame_output_terminal.setFrameStyle(QFrame.Panel | QFrame.Sunken)
 
-        self.splitter1 = QSplitter(QtCore.Qt.Horizontal)
-        self.splitter1.addWidget(self.frame_frame_output)
-        self.splitter1.addWidget(self.frame_calculation_output)
-        self.splitter1.addWidget(self.frame_output_terminal)
+        #self.splitter1 = QSplitter(QtCore.Qt.Horizontal)
+        #self.splitter1.addWidget(self.frame_frame_output)
+        #self.splitter1.addWidget(self.frame_calculation_output)
+        #self.splitter1.addWidget(self.frame_output_terminal)
 
-        self.frame_splitter_layout.addWidget(self.splitter1)
+        #self.frame_splitter_layout.addWidget(self.splitter1)
 
 
         # Define the widgets.. QFrame and QPlainTextEdit... (twice)
-        self.frame_for_anomalies = QFrame()
+        #self.frame_for_anomalies = QFrame()
         self.frame_for_anomalies.setFrameStyle(QFrame.Panel | QFrame.Sunken)
         self.calculation_terminal = QPlainTextEdit()
         self.output_terminal = QPlainTextEdit()
@@ -187,7 +187,7 @@ class WindowFeatureUpload(QMainWindow):
         self.complete_layout.addLayout(self.hor_line_4_layout)
         self.complete_layout.addLayout(self.lbl_chosen_anomaly_dir_layout)
         self.complete_layout.addLayout(self.hor_line_5_layout)
-        self.complete_layout.addLayout(self.frame_splitter_layout)
+        #self.complete_layout.addLayout(self.frame_splitter_layout)
 
         #self.complete_layout.addLayout(self.frame_qplaintextedit_layout)
         #self.complete_layout.addStretch()
