@@ -1,8 +1,9 @@
-import numpy as np
+#import numpy as np
 import sys
 import os
-import pandas as pd
-import seaborn as sns
+#import pandas as pd
+#import seaborn as sns
+
 
 import progressbar_QThread
 
@@ -14,7 +15,7 @@ from PySide2.QtGui import QPixmap
 from PySide2.QtCore import Qt
 
 from PySide2.QtWidgets import (
-    QApplication, QVBoxLayout, QHBoxLayout,
+    QApplication, QVBoxLayout, QHBoxLayout, QCheckBox,
     QComboBox, QPlainTextEdit, QProgressBar, QFormLayout, QGridLayout,
     QPushButton, QSplitter, QCheckBox, QListWidget, QFrame, QScrollArea,
     QWidget, QMainWindow, QLineEdit, QLabel
@@ -118,13 +119,13 @@ class WindowFeatureUpload(QMainWindow):
 
         # Define buttons..
         self.btn_show_anomalies_frame = QPushButton("Show anomalies of chosen line")
-        self.btn_show_frame = QPushButton("Show frame")
-        self.btn_2_dummy = QPushButton("Dummy button 2")
+        self.btn_show_scrollarea = QPushButton("Show scrollarea")
+        self.btn_show_qframe = QPushButton("Show Qframe alone")
 
         # Fill the layout with the buttons...
         self.btn_layout.addWidget(self.btn_show_anomalies_frame)
-        self.btn_layout.addWidget(self.btn_show_frame)
-        self.btn_layout.addWidget(self.btn_2_dummy)
+        self.btn_layout.addWidget(self.btn_show_scrollarea)
+        self.btn_layout.addWidget(self.btn_show_qframe)
 
         # Define layout for horizontal line
         self.hor_line_4_layout = QHBoxLayout()
@@ -200,7 +201,8 @@ class WindowFeatureUpload(QMainWindow):
         self.qplainedittext_layout = QHBoxLayout()
 
         ### self.qplainedittext_layout.addWidget(self.scroll_area, stretch=1)
-        self.qplainedittext_layout.addWidget(self.scrolling_area, stretch=5)
+        self.qplainedittext_layout.addWidget(self.scrolling_area, stretch=1)
+
         #self.qplainedittext_layout.addLayout(self.layout_for_frame, stretch=1)
         self.qplainedittext_layout.addWidget(self.calculation_terminal, stretch=1)
         self.qplainedittext_layout.addWidget(self.output_terminal, stretch=1)
@@ -271,10 +273,13 @@ class WindowFeatureUpload(QMainWindow):
         # Define signals and slots
         #self.frame_scrollarea = None
         self.scroll = None
-        self.btn_show_frame.clicked.connect(self.show_frame)
+        self.btn_show_scrollarea.clicked.connect(self.show_scrollarea)
+        self.qframe_alone = None
+        self.btn_show_qframe.clicked.connect(self.show_qframe_alone)
 
+        self.btn_show_anomalies_frame.clicked.connect(self.show_qframe_and_scrollarea)
 
-    def show_frame(self):
+    def show_scrollarea(self):
 
         # Define the QFrame class and paste it at the right place...
 
@@ -283,10 +288,11 @@ class WindowFeatureUpload(QMainWindow):
 
             self.scroll = QScrollArea()
             self.widget = QWidget()
+            self.frame_1 = QFrame()
             self.vbox = QVBoxLayout() # Define QHBoxLayout() for containing multiple subwidgets.. here QLabels
 
             for i in range(1, 50):
-                object = QLabel("TextLabel for scrolling")
+                object = QCheckBox("TextLabel for scrolling")
                 self.vbox.addWidget(object)
             self.widget.setLayout(self.vbox)
 
@@ -320,11 +326,52 @@ class WindowFeatureUpload(QMainWindow):
             self.scroll = None
             print('self.scroll set to None...')
 
+    def show_qframe_alone(self):
+
+        print('QFrame is none')
+        if self.qframe_alone is None:
+            self.qframe_alone = QFrame(parent=self)
+            self.qframe_alone.setStyleSheet("background-color: rgba(0, 155, 255, 80);")
+
+            self.qframe_alone.move(self.calculation_terminal.x(), self.calculation_terminal.y())
+            self.qframe_alone.resize(self.calculation_terminal.width(), self.calculation_terminal.height())
+            self.qframe_alone.show()
+        else:
+            self.qframe_alone.hide()
+            self.qframe_alone = None
+
+    def show_qframe_and_scrollarea(self):
+        print('going into summary function...')
+        self.scroll_1 = QScrollArea()
+        self.widget_1 = QWidget()
+        self.frame_1 = QFrame()
+        self.vbox_1 = QVBoxLayout()  # Define QHBoxLayout() for containing multiple subwidgets.. here QLabels
+
+        for i in range(1, 50):
+            object_1 = QCheckBox("TextLabel for scrolling")
+            self.vbox_1.addWidget(object_1)
+        self.widget_1.setLayout(self.vbox_1)
+
+        self.frame_1.addWidget(self.widget_1)
+
+        # Scroll Area & Properties
+        self.scroll_1.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_1.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_1.setWidgetResizable(True)
+
+        self.scroll_1.setWidget(self.widget_1)
+        self.scrolling_area.setWidget(self.scroll_1)
+
+
+
+
+
+
 class FrameScrollArea(QFrame):
     def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
 
-        style = """dummy_framearea {
+        style = """FrameScrollArea {
             border: 1px solid;
             background-color: red;
             }
