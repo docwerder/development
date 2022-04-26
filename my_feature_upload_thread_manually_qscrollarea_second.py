@@ -120,12 +120,12 @@ class WindowFeatureUpload(QMainWindow):
         # Define buttons..
         self.btn_show_anomalies_frame = QPushButton("Show anomalies of chosen line")
         self.btn_show_scrollarea = QPushButton("Show scrollarea")
-        self.btn_show_qframe = QPushButton("Show Qframe alone")
+        #self.btn_show_qframe = QPushButton("Show Qframe alone")
 
         # Fill the layout with the buttons...
         self.btn_layout.addWidget(self.btn_show_anomalies_frame)
         self.btn_layout.addWidget(self.btn_show_scrollarea)
-        self.btn_layout.addWidget(self.btn_show_qframe)
+        #self.btn_layout.addWidget(self.btn_show_qframe)
 
         # Define layout for horizontal line
         self.hor_line_4_layout = QHBoxLayout()
@@ -164,14 +164,28 @@ class WindowFeatureUpload(QMainWindow):
         # New version: First: Only QPlainTextEdit-Widgets....
         # Additional try: With scroll-Area!
 
-        self.layout_for_frame = QHBoxLayout()
-        self.frame_for_scrollarea = None
+        self.scrollarea_btn_layout = QVBoxLayout()
 
+        self.layout_for_frame = QHBoxLayout()
+        self.btn_bar_layout = QHBoxLayout()
+
+        self.evaluate_button = QPushButton("Evaluate ...")
+        self.write_button = QPushButton("Write ...")
+        self.cancel_button = QPushButton("Cancel ...")
+
+        # Fill the btn_bar_layout
+        self.btn_bar_layout.addWidget(self.evaluate_button)
+        self.btn_bar_layout.addWidget(self.write_button)
+        self.btn_bar_layout.addWidget(self.cancel_button)
+
+        self.frame_for_scrollarea = None
         self.scrolling_area = QScrollArea()
         self.scrolling_area.setWidgetResizable(True)
 
         self.layout_for_frame.addWidget(self.scrolling_area)
 
+        self.scrollarea_btn_layout.addLayout(self.layout_for_frame)
+        self.scrollarea_btn_layout.addLayout(self.btn_bar_layout)
 
         self.calculation_terminal = QPlainTextEdit()
         self.output_terminal = QPlainTextEdit()
@@ -202,7 +216,8 @@ class WindowFeatureUpload(QMainWindow):
         self.qplainedittext_layout = QHBoxLayout()
 
         ### self.qplainedittext_layout.addWidget(self.scroll_area, stretch=1)
-        self.qplainedittext_layout.addLayout(self.layout_for_frame, stretch=1)
+        self.qplainedittext_layout.addLayout(self.scrollarea_btn_layout, stretch=1)
+        #self.qplainedittext_layout.addLayout(self.layout_for_frame, stretch=1)
         self.qplainedittext_layout.addWidget(self.calculation_terminal, stretch=1)
         self.qplainedittext_layout.addWidget(self.output_terminal, stretch=1)
 
@@ -273,9 +288,9 @@ class WindowFeatureUpload(QMainWindow):
         #self.frame_scrollarea = None
         self.btn_show_scrollarea.clicked.connect(self.show_scrollarea)
         self.qframe_alone = None
-        self.btn_show_qframe.clicked.connect(self.show_qframe_alone)
+        #self.btn_show_qframe.clicked.connect(self.show_qframe_alone)
 
-        self.btn_show_anomalies_frame.clicked.connect(self.show_qframe_and_scrollarea)
+        #self.btn_show_anomalies_frame.clicked.connect(self.show_qframe_and_scrollarea)
 
     def show_scrollarea(self):
 
@@ -283,20 +298,18 @@ class WindowFeatureUpload(QMainWindow):
 
         if self.frame_for_scrollarea is None:
             self.frame_for_scrollarea = FrameScrollArea()
-            self.create_btn_layout()
+            #self.btn_bar_layout = self.create_btn_layout()
+
             #self.vbox = QVBoxLayout() # Define QHBoxLayout() for containing multiple subwidgets.. here QLabels
             #self.vbox = self.frame_for_scrollarea.vbox # normally right?
             self.frame_total = self.frame_for_scrollarea.frame_total
 
-            # for i in range(1, 50):
-            #     object = QCheckBox("TextLabel for scrolling")
-            #     self.vbox.addWidget(object)
-
             # self.frame_for_scrollarea.setLayout(self.vbox)  # normally right??
             self.frame_for_scrollarea.setLayout(self.frame_total)
             self.scrolling_area.setWidget(self.frame_for_scrollarea)
-
         else:
+            #self.btn_bar_layout.hide()
+            #self.btn_bar_layout = None
             self.frame_for_scrollarea.hide()
             self.frame_for_scrollarea = None
 
@@ -309,21 +322,8 @@ class WindowFeatureUpload(QMainWindow):
             # which contains the vboxlayout and the qlabels...
             # self.scroll.setWidget(self.widget)
 
-            # below code is the important one!
-            # self.scrolling_area.setWidget(self.scroll)
-            #self.frame_scrollarea = FrameScrollArea(parent=self)
-            #self.frame_scrollarea.setStyleSheet("background-color: rgba(0, 155, 255, 80);")
-            #self.frame_scrollarea.move(self.frame_left.x(), self.frame_left.y())
-            #self.frame_scrollarea.resize(self.frame_left.width(), self.frame_left.height())
-
-            #self.scroll.setWidget(self.frame_scrollarea)
-            #self.scroll.setWidget(self.frame_left)
 
 
-            #self.frame_scrollarea.addWidget(self.scroll)
-            #self.scroll.setWidget(self.widget)
-            #self.scroll.show()
-            #self.frame_scrollarea.
     def create_btn_layout(self):
         print('additional function output...')
         self.frame_btn_layout = QHBoxLayout()
@@ -334,43 +334,6 @@ class WindowFeatureUpload(QMainWindow):
         self.frame_btn_layout.addWidget(self.write_button)
         self.frame_btn_layout.addWidget(self.cancel_button)
         self.qplainedittext_layout.addLayout(self.frame_btn_layout, stretch=1)
-
-    def show_qframe_alone(self):
-
-        print('QFrame is none')
-        if self.qframe_alone is None:
-            self.qframe_alone = QFrame(parent=self)
-            self.qframe_alone.setStyleSheet("background-color: rgba(0, 155, 255, 80);")
-
-            self.qframe_alone.move(self.calculation_terminal.x(), self.calculation_terminal.y())
-            self.qframe_alone.resize(self.calculation_terminal.width(), self.calculation_terminal.height())
-            self.qframe_alone.show()
-        else:
-            self.qframe_alone.hide()
-            self.qframe_alone = None
-
-    def show_qframe_and_scrollarea(self):
-        print('going into summary function...')
-        self.scroll_1 = QScrollArea()
-        self.widget_1 = QWidget()
-        self.frame_1 = QFrame()
-        self.vbox_1 = QVBoxLayout()  # Define QHBoxLayout() for containing multiple subwidgets.. here QLabels
-
-        for i in range(1, 50):
-            object_1 = QCheckBox("TextLabel for scrolling")
-            self.vbox_1.addWidget(object_1)
-        self.widget_1.setLayout(self.vbox_1)
-
-        self.frame_1.addWidget(self.widget_1)
-
-        # Scroll Area & Properties
-        self.scroll_1.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.scroll_1.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.scroll_1.setWidgetResizable(True)
-
-        self.scroll_1.setWidget(self.widget_1)
-        self.scrolling_area.setWidget(self.scroll_1)
-
 
 
 class FrameScrollArea(QFrame):
