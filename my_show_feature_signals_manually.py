@@ -42,7 +42,7 @@ class WindowShowFeatureSignals(QMainWindow):
         self.move(150, 100)
         self.resize(2000, 1200)
 
-        
+
         # #############################################
         #  Define the layout
         # #############################################
