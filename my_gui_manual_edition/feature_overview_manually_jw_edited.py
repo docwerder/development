@@ -377,7 +377,7 @@ class WindowShowFeatureOverview(QMainWindow):
                     self.overview_available_features.loc[self.index_overview, 'uploaded_ctn'] = self.row_overview['ctn']
 
         self.overview_available_features = self.overview_available_features.fillna(0)
-        print(tabulate(self.overview_available_features, headers='keys', tablefmt='psql'))
+        #print(tabulate(self.overview_available_features, headers='keys', tablefmt='psql'))
         self.overview_available_features.to_csv('overview_available_features.csv')
         # self.uploaded_feature_df.to_csv('uploaded_feature_df.csv')
         # self.overview_available_features.to_csv('overview_available_features.csv')
@@ -400,6 +400,7 @@ class WindowShowFeatureOverview(QMainWindow):
             self.overview_available_features['project_number'] = \
                 self.overview_available_features['project_number'].astype(str)
             self.overview_available_features['feature'] = self.overview_available_features['feature'].str.lower()
+            self.list_of_lines.addItem('All Features')
             [self.list_of_lines.addItem(x) for x in self.overview_available_features['feature'].unique()]
             self.figure_handle_db = self.overview_available_features['feature'].unique()
             # Search for the maximum length of the line
@@ -428,6 +429,7 @@ class WindowShowFeatureOverview(QMainWindow):
         self.any_line = self.overview_available_features['lineshort'].unique()
         self.any_feature = self.overview_available_features['feature'].unique()
 
+        # clicked item is a line!
         if self.single_item_clicked in self.any_line:
             print('clicked_item is: ', self.single_item_clicked)
             self.remove_figure_available_feature_window()
@@ -440,7 +442,7 @@ class WindowShowFeatureOverview(QMainWindow):
 
             # Filling the figure with the relevant informations...
             # That means: Configure the upper plot!
-
+            print(tabulate(self.overview_available_features, headers='keys', tablefmt='psql'))
             self.counts = self.overview_available_features[self.overview_available_features['lineshort']
                                                            == self.single_item_clicked]['ctn']
             self.selected_features = self.overview_available_features[self.overview_available_features['lineshort']
@@ -492,10 +494,104 @@ class WindowShowFeatureOverview(QMainWindow):
                 #show_values_on_bars_v2(self.axf2, 'h', 0, self.max_of_counts_not_zero, +0.45)
 
 
-
-        elif self.single_item_clicked in self.any_feature:
+        # Clicked item is a feature!
+        elif (self.single_item_clicked in self.any_feature):
             print('clicked_item is: ', self.single_item_clicked)
+            self.remove_figure_available_feature_window()
+            # Create a figure-handle for plotting...
+            sns.set_style("darkgrid")
+            self.figure_tmp_available_features = plt.Figure(figsize=(7, 5), dpi=65, facecolor=(1, 1, 1),
+                                                            edgecolor=(0, 0, 0))
+            self.add_figure_available_features_window(self.figure_tmp_available_features)
+            self.axf1 = self.figure_tmp_available_features.add_subplot(111)
 
+            # Filling the figure with the relevant informations...
+            # That means: Configure the upper plot!
+            self.uploaded_feature_df = pd.read_csv('uploaded_feature_df.csv', index_col=[0])
+            # print(tabulate(self.overview_available_features, headers='keys', tablefmt='psql'))
+            for index_uploaded_feature_df, row_uploaded_feature_df in self.uploaded_feature_df.iterrows():
+                for index_overview, row_overview in self.overview_available_features.iterrows():
+                    if (row_overview['lineshort'] == row_uploaded_feature_df['lineshort']) & (
+                        row_overview['feature'] == row_uploaded_feature_df['feature']):
+                        self.overview_available_features.loc[index_overview, 'uploaded_ctn'] = row_overview['ctn']
+
+            self.overview_available_features = self.overview_available_features.fillna(0)
+
+
+
+            self.counts = self.overview_available_features[self.overview_available_features['feature']
+                                                           == self.single_item_clicked]['ctn']
+            print(tabulate(self.overview_available_features, headers='keys', tablefmt='psql'))
+            self.selected_features = self.overview_available_features[self.overview_available_features['feature']
+                                                                      == self.single_item_clicked]['lineshort']
+            print('selected_features: ', self.selected_features)
+            clrs = ['lime' if (x != 0) else 'grey' for x in self.overview_available_features[
+                self.overview_available_features['feature'] == self.single_item_clicked]['uploaded_ctn']]
+            self.axf1.barh(self.selected_features, self.counts, color=clrs)
+            self.max_of_counts = max(self.counts)
+            self.max_x_lim = self.max_of_counts * 1.1
+            self.axf1.set_xlim(0, self.max_x_lim)
+            print('self.max of counts: \n', self.max_of_counts)
+            print('self.max_x_lim: \n', self.max_x_lim)
+            # show_values_on_bars_v2(self.axf1, 'h', 0, self.max_of_counts, + 0.45)
+            self.axf1.set_title(self.single_item_clicked)
+
+            # Filling the figure with the relevant informations...
+            # That means: Configure the lower plot!
+
+            self.remove_figure_uploaded_feature_window()
+
+            self.figure_tmp_uploaded_features = plt.Figure(figsize=(7, 5), dpi=65, facecolor=(1, 1, 1),
+                                                           edgecolor=(0, 0, 0))
+            self.add_figure_uploaded_features_window(self.figure_tmp_uploaded_features)
+            self.axf2 = self.figure_tmp_uploaded_features.add_subplot(111)
+            sns.set_style('darkgrid')
+
+            self.uploaded_features_not_zero = self.overview_available_features[(self.overview_available_features[
+                                                                                    'feature'] == self.single_item_clicked) & (
+                                                                                       self.overview_available_features[
+                                                                                           'uploaded_ctn'] != 0)][
+                'feature']
+
+            self.counts_not_zero = self.overview_available_features[(self.overview_available_features[
+                                                                         'feature'] == self.single_item_clicked) & (
+                                                                            self.overview_available_features[
+                                                                                'uploaded_ctn'] != 0)]['uploaded_ctn']
+
+            if self.counts_not_zero.empty & self.uploaded_features_not_zero.empty:
+                self.title_string = self.single_item_clicked + ' NO uploaded features'
+                self.axf2.set_title(self.title_string)
+                self.axf2.barh(0, 0, color=clrs)
+                print(self.single_item_clicked, 'has no uploaded features')
+            else:
+                self.axf2.barh(self.uploaded_features_not_zero, self.counts_not_zero, color='lime')
+                self.max_of_counts_not_zero = max(self.counts_not_zero)
+                self.axf2.set_xlim(0, self.max_of_counts_not_zero * 1.1)
+                self.title_string = 'Uploaded features into pdw of line ' + self.single_item_clicked
+                self.axf2.set_title(self.title_string)
+                # show_values_on_bars_v2(self.axf2, 'h', 0, self.max_of_counts_not_zero, +0.45)
+        elif (self.single_item_clicked in "All Features"):
+            print('clicked_item is hurrey: ', self.single_item_clicked)
+            self.sum_all_features = self.overview_available_features.groupby('feature')['ctn'].sum()
+            self.df_all_features = {'feature': list(self.sum_all_features.index), 'ctn': list(self.sum_all_features)}
+            self.df_all_features = pd.DataFrame(self.df_all_features)
+            print(tabulate(self.df_all_features, headers='keys', tablefmt='psql'))
+            self.remove_figure_available_feature_window()
+            sns.set_style("darkgrid")
+            self.figure_tmp_available_features = plt.Figure(figsize=(7, 5), dpi=65, facecolor=(1, 1, 1),
+                                                            edgecolor=(0, 0, 0))
+            self.add_figure_available_features_window(self.figure_tmp_available_features)
+            self.axf1 = self.figure_tmp_available_features.add_subplot(111)
+            self.axf1.barh(self.df_all_features['feature'], self.df_all_features['ctn'])
+            self.axf1.set_xscale('log')
+            # self.uploaded_feature_df = pd.read_csv('uploaded_feature_df.csv', index_col=[0])
+            # for index_uploaded_feature_df, row_uploaded_feature_df in self.uploaded_feature_df.iterrows():
+            #     for index_overview, row_overview in self.overview_available_features.iterrows():
+            #         if (row_overview['lineshort'] == row_uploaded_feature_df['lineshort']) & (
+            #             row_overview['feature'] == row_uploaded_feature_df['feature']):
+            #             self.overview_available_features.loc[index_overview, 'uploaded_ctn'] = row_overview['ctn']
+            #
+            # self.overview_available_features = self.overview_available_features.fillna(0)
 
 
 
