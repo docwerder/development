@@ -2,36 +2,46 @@ import sys
 sys.path.append('/Users/joerg/repos/braz/')
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 #from utilities_functions import scan_func
-url = 'https://www.schlagerradio.de/hitparade'
 
-db = []
-titles = []
-site_tmp = requests.get(url)
+def get_top_50():
 
-soup_tmp = BeautifulSoup(site_tmp.content, 'html.parser')
+    url = 'https://www.schlagerradio.de/hitparade'
+    db = []
+    titles = []
+    site_tmp = requests.get(url)
 
-print(f'scanning Site: {url}, Response: {site_tmp}')
+    soup_tmp = BeautifulSoup(site_tmp.content, 'html.parser')
 
-#soup_tmp.find_all("div", {"class": "stylelistrow"})
-data_site_page = soup_tmp.find_all('a')
+    print(f'scanning Site: {url}, Response: {site_tmp}')
 
-for lf in data_site_page:
-    db.append(lf.get('href'))
+    #soup_tmp.find_all("div", {"class": "stylelistrow"})
+    data_site_page = soup_tmp.find_all('a')
 
-# print(f' db of {url}: ', db)
+    for lf in data_site_page:
+        db.append(lf.get('href'))
 
-#db = scan_func('https://www.schlagerradio.de/hitparade')
-titles = []
-db1 = soup_tmp.find_all("div", {"class": "totalpoll-question-choices-item-label"})
+    # print(f' db of {url}: ', db)
 
-for lf in db1:
-    titles.append(lf.text)
+    #db = scan_func('https://www.schlagerradio.de/hitparade')
+    titles = []
+    db1 = soup_tmp.find_all("div", {"class": "totalpoll-question-choices-item-label"})
 
-for ti in titles:
-    print(ti)
-#single_title = list(titles[0])[1]
+    for lf in db1:
+        titles.append(lf.text)
 
-#print(type(single_title))
-#db_title = [i for i in titles if i.startswith('<div')]
-#print(db_title)
+    titles_db = []
+
+    for title in titles:
+        titles_db.append(title)
+        #print(title)
+
+    return titles_db
+    print(titles_db)
+
+if __name__ == '__main__':
+    gg = get_top_50()
+    print(gg)
+#titles_db.to_csv('top_50_schlagerradio.csv')
+
