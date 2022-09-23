@@ -2,12 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../braz"
 		}
-	],
-	"settings": {
-		"editor.fontSize": 18
-	},
+	]
 }

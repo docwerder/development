@@ -26,14 +26,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-from emat_mfl_combined.applications.pdw_upload.analysis_tools.pdw_tools import joerg_pdw_py_wc
-from emat_mfl_combined.applications.pdw_upload.analysis_tools.tools import show_values_on_bars_v2
+# from emat_mfl_combined.applications.pdw_upload.analyis_tools.pdw_tools import joerg_pdw_py_wc
+# from emat_mfl_combined.applications.pdw_upload.analysis_tools.tools import show_values_on_bars_v2
 #from emat_mfl_combined.applications.pdw_upload.pdw.gui_scanning_directories \
 #    import window_scanning_directories_for_feature_overview as scanning_window
 
-from emat_mfl_combined.applications.pdw_upload.pdw.pdw_manual_edition import (
-scan_directories_manually as scanning_window
-)
+# from emat_mfl_combined.applications.pdw_upload.pdw.pdw_manual_edition import (
+# scan_directories_manually as scanning_window
+# )
 
 class QHLine(QFrame):
     def __init__(self):
@@ -692,6 +692,7 @@ class WindowShowFeatureOverview(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = WindowShowFeatureOverview()
+    window = WindowShowFeatureOverview(200, 150, 800)
     window.show()
     sys.exit(app.exec_())
+    

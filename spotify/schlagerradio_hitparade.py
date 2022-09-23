@@ -18,7 +18,7 @@ def get_top_50():
 
     #soup_tmp.find_all("div", {"class": "stylelistrow"})
     data_site_page = soup_tmp.find_all('a')
-b
+
     for lf in data_site_page:
         db.append(lf.get('href'))
 

@@ -1,6 +1,7 @@
 # !/usr/bin/python3
 import sys
 import os
+os.system("clear") 
 os.environ['QT_MAC_WANTS_LAYER'] = '1'
 #from PyQt5 import QtCore, QtGui, QtWidgets
 from PySide2 import QtCore , QtGui, QtWidgets
@@ -64,7 +65,7 @@ class Main(QtWidgets.QMainWindow):
         self.ui.button.clicked.connect(self.close)
         self.ui.button.setFocusPolicy(QtCore.Qt.NoFocus)
 
-        self.ui.label = QtWidgets.QLabel("Hello World")
+        self.ui.label = QtWidgets.QLabel("Hello World V1,77")
         self.ui.label.setObjectName("label")
         self.ui.label.setAlignment(QtCore.Qt.AlignCenter)
 

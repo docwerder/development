@@ -33,8 +33,8 @@ title_str_tmp = titles
 #print(title_str_tmp)
 node = '\nTOP-PLAYLISTSchlager Charts Top 100 '
 titles_string = itertools.dropwhile(lambda x: x != node, title_str_tmp)
-#print(it)
-next(titles_string)
+print('titles_string: ', next(titles_string))
+#next(titles_string)
 for single_title in titles_string:
     print(single_title)
 

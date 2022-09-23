@@ -4,4 +4,5 @@
   },
   "editor.fontSize": 18,
   "python.formatting.provider": "autopep8",
+  "python.defaultInterpreterPath": "/Users/joerg/opt/anaconda3/envs/pyside2_dev/bin/python"
  }
