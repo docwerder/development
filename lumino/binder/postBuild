@@ -1,7 +1,0 @@
-#!/bin/bash
-set -euo pipefail
-
-npm install -g yarn
-yarn
-yarn build
-yarn build:examples
