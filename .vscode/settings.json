@@ -2,7 +2,7 @@
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter-notebook"
   },
-  "editor.fontSize": 18,
+  "editor.fontSize": 16,
   "python.formatting.provider": "autopep8",
   "python.defaultInterpreterPath": "/Users/joerg/opt/anaconda3/envs/pyside2_dev/bin/python",
   "explorer.sortOrder": "modified",
