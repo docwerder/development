@@ -10,7 +10,7 @@ def main():
     
     pattern = os.path.join(base_dir_m4b, '*.m4b')
     file_list = [file for file in sorted(glob.glob(pattern, recursive = False))]
-    for file in file_list[3:100]:
+    for file in file_list[100:]:
         dir_path, file_name = os.path.split(file)
         # Drop the file extension
         file_name = os.path.splitext(file_name)[0]
