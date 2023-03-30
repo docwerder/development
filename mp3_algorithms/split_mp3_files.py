@@ -11,7 +11,7 @@ def main():
     mp3_dir = pathlib.Path(mp3_dir)
     print(mp3_dir)
     # mp3_pattern = os.path.join(mp3_dir, '*.mp3')
-    for mp3_file in sorted(mp3_dir.iterdir())[5:10]:
+    for mp3_file in sorted(mp3_dir.iterdir())[165:]:
         # print(mp3_file)
         if str(mp3_file.stem).startswith('.DS_Store'):
             continue
