@@ -127,7 +127,7 @@ class unMountWerderNas2():
             end repeat
         end tell
         ''')
-        print("UNMOUNT WERDERNAS2 before!")
+        print("UNMOUNT WERDERNAS2!")
 
 
 ###################
@@ -142,7 +142,7 @@ class unMountWerderNasx():
             end repeat
         end tell
         ''')
-        print("UNMOUNT WERDERNASX before!")
+        print("UNMOUNT WERDERNASX!")
 
 
 
@@ -158,4 +158,4 @@ class unMountWerderNas2x():
             end repeat
         end tell
         ''')
-        print("UNMOUNT WERDERNAS2X before!")
+        print("UNMOUNT WERDERNAS2X!")
