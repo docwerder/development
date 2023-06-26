@@ -9,7 +9,7 @@ from influxdb import InfluxDBClient
 INFLUXDB_ADDRESS = '192.168.178.48'
 INFLUXDB_USER = 'admin'
 INFLUXDB_PASSWORD = '123pax123'
-INFLUXDB_DATABASE = 'DBONE'
+INFLUXDB_DATABASE = 'DBCURRENT' # standard database would b "DBONE"
  
 MQTT_ADDRESS = '192.168.178.48'
 MQTT_USER = 'admin'
