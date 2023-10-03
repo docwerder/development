@@ -14,24 +14,6 @@ app = dash.Dash(__name__)
 # Definiere den Layout der Dash-Anwendung
 app.layout = html.Div([
     dcc.Graph(id='bar-chart', style={'height': '800px'}),
-    html.Script('''
-        var year = {min_year};
-        function animateBarChart() {{
-            var interval = setInterval(function() {{
-                year += 1;
-                if (year > {max_year}) {{
-                    year = {min_year};
-                }}
-                var callback = {{
-                    "id": "bar-chart",
-                    "property": "figure",
-                    "value": year
-                }};
-                Plotly.update("bar-chart", callback);
-            }}, 1000);
-        }}
-        animateBarChart();
-    '''.format(min_year=df['Saison'].min(), max_year=df['Saison'].max()))
 ])
 
 # Definiere die Funktion zum Aktualisieren des Balkendiagramms
@@ -70,7 +52,21 @@ def update_bar_chart(selected_year):
         margin={'l': 100, 'r': 100, 't': 50, 'b': 50}
     )
 
-    return fig
+    # Aktualisiere das Balkendiagramm automatisch mit einer Animation
+    selected_year += 1
+    if selected_year > df['Saison'].max():
+        selected_year = df['Saison'].min()
+
+    # Zeige das Diagramm für eine kurze Zeit an
+    app.renderer.plotlyjs.serve_figures(fig)
+
+    # Warte für eine Sekunde
+    time.sleep(1)
+
+    # Aktualisiere die Seite und rufe die update_bar_chart-Funktion erneut auf
+    app.callback_map.clear()
+    return update_bar_chart(selected_year)
+
 
 # Starte die Dash-Anwendung
 if __name__ == '__main__':
